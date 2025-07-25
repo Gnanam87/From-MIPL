@@ -1,0 +1,112 @@
+Hi Everyone, Welcome to the Channel.
+
+We are going to start a videos about SQL. 
+
+The love language of databases
+
+##The most used language in the Data world. You may be find 1000 of videos about SQL. but this is my way of SQL.
+
+This is a very basic information about SQL and Data. 
+if you are good at SQL please skip this video and even if you want some more knowledge on the basics please keep watching till the end.
+
+We all know that data is a information.By storing the information in a useful manner and retreive the useful information is the purpose of DBMS.
+Database management system. In that RDBMS is Relational Database manegement System is based on the related information are stored in a one place and use it.
+SQL is a RDBMS. So we are going to talk about that in this video.
+
+We all came across the progrss card from our schools. in that we do have our enrolement id,name,subject wise mark and total and the rank. 
+if we taken up as this as a example we can have the data like this(Excel). The same way we can able to load it into the database as a table.
+The student table contains like this.
+Now we are going to learn a SQL from the scratch with a sample Project (Worlds richcest people dataset). 
+In this video you are going to learn about
+
+DDL,
+DML,
+Multiple select options
+Filters
+in SQL with a mini project.
+
+by End of this video you have enough knowledge on the database and table and a query the table at a minimal level.
+
+About the Project:
+ Project explanantion
+
+We need to find the below details fromt he data.
+
+1. Top 10 richest person in the world?
+2. Richest Person in each country?
+3. Which industry/Country has more peoples?
+4. India's Top 5 richest persons
+5. How many peple having nt worth more than $100 million?
+
+First to get the dataset. we can download from the google. by directly we can able to load the data from import task. 
+or we can create table and write a insert script from that.
+
+Basics structure:
+
+let create database.. usually as a developer we can't create the datase. by admin perople will create the database. 
+inside the database we can create the table.
+
+by this stage i can show you the how the db and table have cluped together.
+
+from computer we know that c,d,e, multiple drives are there. in that multiple folders are there inside that we can have files to store image,video,audio
+
+like that drive is a database--> schema is a folder --> table is a file. let's not worry about the database and schema its just a folder name.
+
+BASE PREP
+
+CREAT DATABASE database.
+
+CREATE TABLE:
+focus only on the table.as i told earlier a table is like a file.actually contains the data.
+
+The table in SQL is designed as Rows and columns.
+
+Rows as horizontal part. Columns as  vertical pattern helping Rows to identified what data and which type.
+
+while creating the table itself we will define the name of the column and the type of the column it means a data. 
+lets say for name we can have string datatype and for numeric we can have either int or float.
+
+lets start our project by creating a table for our dataset. we are having five columns in the file. 
+so we are going to create a five columns table. 
+
+lets learn about few of the datatypes here.  int,float and varchar for string types. 
+we will post a separate video for datatypes alone. lets focus on creating a table.
+
+CREATE TABLE script
+
+after creating a table we can able to load the data.
+
+LOAD DATA:
+
+for loading the data into table there are mutiple ways to do that.By doing Insert script , 
+selecting from another table or tables, import from files. or any ETL tools.
+
+Now here for we are going to do sample for 5 records and by doing import we are going to load full tables.
+
+after loading the data into tables we can able to view the data by doing select statement.
+
+select * from table name. here * represents all the column in the table. 
+if we want to select any one or more columns we can able to mention in the select statements.
+
+Query the Data:
+
+before we are selecting full table.now we are going to find what we want from the data.
+
+Filer the data with where clause (=,<>,IN,AND,OR,NOT,BETWEEN)
+Restricting the record with Top clause (Distinct and TOP)
+combining the data with Group by (Group by)
+find the aggregated values using aggregate functions ( MIN,MAX,SUM,COUNT,MAX,AVG)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

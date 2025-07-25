@@ -1,0 +1,52 @@
+Golden jubilee for SQl ****50 Years******
+Yes we are in the year of 2024 and we are her to celebrate the 50th year of SQL since its created.
+
+What is SQL :- SQl is structed Query Language
+Its is used to Manage Data by store and retrieve the data from the database.especially in RDBMS.
+If your are familer with Excel that how the SQL table looks like.
+
+Inventors:
+A Relational Model of Data for Large Shared Data Banks" appeared. It was a collection of bold and innovative theses. 
+The author of this new approach, which consequently changed the world of databases, was Edgar F. Codd of IBM Research Laboratory in San Jose, California
+
+The Relational Model paper published by Edgar F. Codd by "A Relational Model of Data for Large Shared Data Banks"
+By used the concepts of Codd Donald D. Chamberlin and Ray Boyce create SEQUEL later called SQL.
+
+History of SQL:
+Initially data was stored in the tap. to read or write by using tap.
+In 1956 IBM invented RAMAC Disk. the first commercial computer that used a moving-head hard disk drive 
+Disks made possible a new kind of software called a database management system, or DBMS.
+1960's -->early disk-based systems were sometimes called “navigational".To answer a question in a navigational system, you write a 
+program that navigates through the pointer-paths to find the information you want.Eg., Graph or network and hierarichal model
+1970 - Only the actual Relational Data Model concepts came into picture. -- Initially IBM refused to implement the relational model becaused it already invested in navigational models.
+	Ted Codd’s paper on the relational data model became one of the most widely-referenced papers in all of computer science.
+	codd was coined the Term OLAP and "twelve laws of online analytical processing".
+	In 1981 Codd later won the prestigious Association of Computing Machinery Turing Award for his work.
+1974 -- SEQUEL -- 
+	we developed a relational query language based on English keywords, called SEQUEL, and published it in a research report in 1974
+	Because Ted’s languages provided a way to query data but didn’t provide any way to update the data.
+	Ray Boyce and Codd has joined and invented the Boyce-codd normalization form.
+1979 - Relational Software introduced one of the first commercially available implementations of SQL, Oracle V2. The Relational Software is non other than Oracle.
+1986 - ANSI and ISO Adopted
+then till 2023 new version of SQL will be publishing.
+
+Major SQL Tools:
+Oracle  - 1979 ,DB2 - 1983 ,MSSQLServer - 1989 ,PostgreSQL -1996, MYSQL  - 1995
+
+Industries Using SQL:
+Finance and Banking ,Healthcare,Retail and E-commerce,Telecommunications,Education,Manufacturing,Government,IT,Transport,Media and Entertainment
+
+Trend : from google
+
+Jobs based on SQL :-
+SQL Developer ,SQL Administrator,SQL Data Analyst,Business Analyst,Data Scientist,Data Modeler,Data Engineer
+
+Sample SQL quries:
+Select,update,,insert,delete,S
+
+Last but not least ...
+Top tech compines like Microsoft , Google , Amazon are using SQL in their Current Data processing and data analsis work.
+
+If you want to starting your carrer in any of the data jobs or you want to switch current job with data job learn SQL and grow.
+
+Thanks 

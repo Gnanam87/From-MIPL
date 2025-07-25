@@ -1,0 +1,62 @@
+We are going to start a video series about SQL. 
+
+The love language of databases.
+
+Data is not a information. until its stored and processed.
+
+lets take is as a example. 
+
+Ram and 23 is both are different data.
+when its stored together only we will able to find the person name is Ram and his age is 23.
+
+like this if we want to find the information/insights from the data. We need to store it as somewhere.
+
+That somewhere is Database. So the database is used to store and retrive the data.
+by storing the data into database we couldn't able to do it much. if we need to find the information we need to communicate with the database.
+
+To communicate with the data base we use SQL.(structured Query Language).
+Before learning SQL. We need to know some hierachy.
+
+To manage the Database we need DBMS(Data base management System).
+
+In that RDBMS is based on the relations between the data. SQL is a RDBMS.
+
+SQL is used as bridge between the user/system between the Database.
+
+How SQL is interacting with Database by useing its Keywords like Select, Insert,Update and Delete
+
+sounds good , yes SQL is created based on the english query.
+
+The inventors of the SQL Donald D. Chamberlin and Ray Boyce.Published a paper about SQL.
+
+"The Relational Query Language based on English keywords" That is why SQL is sometimes called SEQUEL.(Structured English Query Language).
+
+We will see the simple Demo how SQL ised to find the insights from the datasets.
+
+Downloading the Dataset
+
+See there are multiple ways to import a data in sql.
+1.Direct import.
+2.Through ETl tools (SSIS).
+3.Using bulk cipy and bcp
+4.from another table/database/server.
+
+cleaning the data.
+
+Removes -> unwanted data from the dataset.
+transformation -> Trnaform the columns
+
+From this part Data Engineering part has finished
+Data Analyst part has begin
+Find the analysis:
+We are going to Find the answers for these questions?
+we know who has scored most runs, but we can't know in each country who has secure the most runs
+who bolws the most balls entire match
+Who has hit the most four and sixes
+Who has bolwed the most over?
+which country bolwed most maiden overs?
+
+
+
+
+

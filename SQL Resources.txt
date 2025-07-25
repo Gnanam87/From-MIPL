@@ -1,0 +1,37 @@
+https://www.kdnuggets.com/10-github-repositories-to-master-sql
+https://www.complexsql.com/
+
+SQL Learning:
+
+Programming with Mosh - https://www.youtube.com/watch?v=7S_tz1z_5bA
+Kevin Stratvert - https://www.youtube.com/watch?v=h0nxCDiD-zg
+Data with Baraa- https://www.youtube.com/watch?v=SSKVgrwhzus
+Alex The Analyst - https://www.youtube.com/watch?v=OT1RErkfLNQ
+Sumit Mittal - https://www.youtube.com/watch?v=qlkS-e5ym1w
+Luke Barousse - https://www.youtube.com/watch?v=7mz73uXD9DA
+Intellipaat - https://www.youtube.com/watch?v=R2fQ5-PMju0   
+Bro Code - https://www.youtube.com/watch?v=5OdVJbNCSso
+Edureka - https://www.youtube.com/watch?v=q_JsgpiuY98
+Edureka - https://www.youtube.com/watch?v=BPHAr4QGGVE
+Web Dev Simplified - https://www.youtube.com/watch?v=p3qvj9hO_Bo
+techTFQ - https://www.youtube.com/watch?v=Hl4NZB1XR9c
+techTFQ - https://www.youtube.com/watch?v=S86phsLFW1E
+
+Refer this channels:
+Data with Maari - https://www.youtube.com/@DatawithMaari/featured
+Chandoo - https://www.youtube.com/@chandoo_/featured
+
+
+
+
+In Tamil:
+Logic First Tamil - https://www.youtube.com/watch?v=r5IyLq2k2Ps&t=3516s
+Data Engineering - https://www.youtube.com/watch?v=JtaOmwnR6AM&t=2202s
+CodeWithKarthik - https://www.youtube.com/watch?v=yfhzKOAbFIg
+CodebinX - https://www.youtube.com/watch?v=MFoiAoNWIt8
+Santhu Analytics - https://www.youtube.com/watch?v=MLh64Rh6lOY
+Anto sujesh - https://www.youtube.com/watch?v=MyRDUewyF2Y
+Tech with Hema - https://www.youtube.com/watch?v=btZdKO17xOM&t=316s
+
+Shorts:
+Airbyte - https://www.youtube.com/shorts/HZ5eTsH3_TM

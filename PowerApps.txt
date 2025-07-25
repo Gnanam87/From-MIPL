@@ -1,0 +1,187 @@
+For check box :
+
+on Check :
+
+Set(varSelectedUnits, varSelectedUnits + 1);
+Set(varPercentagePerBU, If(varSelectedUnits > 0, 100 / varSelectedUnits, 0));
+Set(varAllocatedPerBU, If(varSelectedUnits > 0, TotalCost / varSelectedUnits, 0))
+
+
+On Uncheck 
+
+Set(varSelectedUnits, varSelectedUnits - 1);
+Set(varPercentagePerBU, If(varSelectedUnits > 0, 100 / varSelectedUnits, 0));
+Set(varAllocatedPerBU, If(varSelectedUnits > 0, TotalCost / varSelectedUnits, 0))
+
+
+Percentage Label : If(Checkbox101.Value, varPercentagePerBU & "%", "")
+
+Amount : If(Checkbox101.Value, Text(varAllocatedPerBU, "###.00"), "")
+
+
+Submit: Set(varFormsubmitted,true);SubmitForm(Form1);Navigate('Success Screen');Set(varSelectedUnits,0)
+
+
+
+,'Trade show or event number':'Trade show or event number_DataCard1'.Update,Measures:Measures_DataCard1.Update,'Cost cluster or Initiative':'Cost cluster or Initiative_DataCard1'.Update,Description:Description_DataCard1.Update,Costs:Costs_DataCard1.Update,Currency:Currency_DataCard1.Update
+
+
+Edit Form: ResetForm(Form1);
+Clear(SelectedRecordCollection); 
+Collect(SelectedRecordCollection, ThisItem);
+EditForm(Form1);
+Navigate('New Entry Screen')
+
+// When the screen is visible or the form is initialized
+Set(varSelectedUnits, 0); // Initialize the number of selected units
+
+// Initialize allocated amounts for each BU to 0 initially (on screen load)
+Set(varAllocatedBU1, 0);
+Set(varAllocatedBU2, 0);
+Set(varAllocatedBU3, 0);
+Set(varAllocatedBU4, 0);
+Set(varAllocatedBU5, 0);
+Set(varAllocatedBU6, 0);
+Set(varAllocatedBU7, 0);
+Set(varAllocatedBU8, 0);
+Set(varAllocatedBU9, 0);
+Set(varAllocatedBU10, 0);
+Set(varAllocatedBU11, 0);
+Set(varAllocatedBU12, 0);
+
+// If editing an existing record, retrieve allocated amounts from the record (use the appropriate field names)
+If(Form1.Mode = FormMode.Edit,
+    Set(varAllocatedBU1, ThisItem.AMS),
+    Set(varAllocatedBU2, ThisItem.EEP),
+    Set(varAllocatedBU3, ThisItem.MIN),
+    Set(varAllocatedBU4, ThisItem.BAT),
+    Set(varAllocatedBU5, ThisItem.MCP),
+    Set(varAllocatedBU6, ThisItem.REY),
+    Set(varAllocatedBU7, ThisItem.EFD),
+    Set(varAllocatedBU8, ThisItem.EPO),
+    Set(varAllocatedBU9, ThisItem.Corporate),
+    Set(varAllocatedBU10, ThisItem.HER),
+    Set(varAllocatedBU11, ThisItem.CEP),
+    Set(varAllocatedBU12, ThisItem.CES)
+)
+
+
+On save:
+
+If(IsBlank(DataCardValue2.Selected.Value)||IsBlank(Radio.Selected.Value) ||IsBlank(DataCardValue4.Text) || IsBlank(DataCardValue1.Selected.Value)||IsBlank(DataCardValue6.Text)
+||IsBlank(txtTotalCost.Text)||IsBlank(DataCardValue31.Selected.Value)||IsBlank(DataCardValue7.Text)||IsBlank(DataCardValue9.SelectedDate)||IsBlank(DataCardValue10.Text)||IsBlank(DataCardValue47.Selected.Value)||IsBlank(DataCardValue20.Selected.Value),
+
+//If true raise 
+
+UpdateContext({showError: true}),
+
+//If not error save the details
+
+If (Form1.Mode=FormMode.New,
+
+//If form is in New mode --> New entry 
+Set(varGUID, GUID());
+Set(exchangeRateToUSD,LookUp('Exchange rates FY25',Currency=DataCardValue31.Selected.Value).USD);
+Set(exchangeRateToEUR,LookUp('Exchange rates FY25',Currency=DataCardValue31.Selected.Value).EUR);
+Set(usdcost,If(DataCardValue31.Selected.Value="USD",Value(txtTotalCost.Text),
+Value(txtTotalCost.Text)/exchangeRateToUSD)
+);
+Set(eurcost,If(DataCardValue31.Selected.Value="EUR",Value(txtTotalCost.Text),Value(txtTotalCost.Text)/exchangeRateToEUR));
+Patch('Cost List FY25',Defaults('Cost List FY25'),{
+    GUID:varGUID,
+    Status:{Value:Radio.Selected.Value},
+    'Type of Costs':{Value: DataCardValue2.Selected.Value},
+    'Trade show or event number': DataCardValue3.Text,
+    Measures:DataCardValue4.Text,
+    'Cost cluster or Initiative':{Value: DataCardValue1.Selected.Value},
+    Description:DataCardValue6.Text,
+    Costs:Value(txtTotalCost.Text),
+    Currency:{Value:DataCardValue31.Selected.Value},
+    Supplier:DataCardValue7.Text,
+    'Date of invoice or quotation':DataCardValue9.SelectedDate,
+    'Ext. Invoice number:':DataCardValue10.Text,
+    AMS:Value(Label201.Text),
+    EEP:Value(Label202.Text),
+    MIN:Value(Label203.Text),
+    BAT:Value(Label204.Text),
+    MCP:Value(Label205.Text),
+    REY:Value(Label206.Text),
+    EFD:Value(Label207.Text),
+    EPO:Value(Label208.Text),
+    Corporate:Value(Label209.Text),
+    HER:Value(Label210.Text),
+    CEP:Value(Label211.Text),
+    CES:Value(Label212.Text),
+    MPS:Value(Label213.Text),
+    Responsible:{Value:DataCardValue47.Selected.Value},
+    'Booked at':{Value:DataCardValue20.Selected.Value},
+    'USD Cost':Round(usdcost,2),
+    'EUR Cost':Round(eurcost,2)
+    });
+    Navigate('Success Screen');,
+
+//Else form is in Edit mode --> Edit the details
+
+Set(varSelectedGUID, Gallery.Selected.GUID);
+Set(exchangeRateToUSD,LookUp('Exchange rates FY25',Currency=DataCardValue31.Selected.Value).USD);
+Set(exchangeRateToEUR,LookUp('Exchange rates FY25',Currency=DataCardValue31.Selected.Value).EUR);
+Set(usdcost,If(DataCardValue31.Selected.Value="USD",Value(txtTotalCost.Text),Value(txtTotalCost.Text)/exchangeRateToUSD));
+Set(eurcost,If(DataCardValue31.Selected.Value="EUR",Value(txtTotalCost.Text),Value(txtTotalCost.Text)/exchangeRateToEUR));
+
+Patch(
+    'Cost List FY25',
+    LookUp('Cost List FY25', GUID = varSelectedGUID),  // Use the record's ID to update the existing one
+    {
+        Status: { Value: Radio.Selected.Value },
+        'Type of Costs': { Value: DataCardValue2.Selected.Value },
+        'Trade show or event number': DataCardValue3.Text,
+        Measures: DataCardValue4.Text,
+        'Cost cluster or Initiative': { Value: DataCardValue1.Selected.Value },
+        Description: DataCardValue6.Text,
+        Costs: Value(txtTotalCost.Text),
+        Currency: { Value: DataCardValue31.Selected.Value },
+        Supplier: DataCardValue7.Text,
+        'Date of invoice or quotation': DataCardValue9.SelectedDate,
+        'Ext. Invoice number:': DataCardValue10.Text,
+        AMS: Value(Label201.Text),
+        EEP: Value(Label202.Text),
+        MIN: Value(Label203.Text),
+        BAT: Value(Label204.Text),
+        MCP: Value(Label205.Text),
+        REY: Value(Label206.Text),
+        EFD: Value(Label207.Text),
+        EPO: Value(Label208.Text),
+        Corporate: Value(Label209.Text),
+        HER: Value(Label210.Text),
+        CEP: Value(Label211.Text),
+        CES: Value(Label212.Text),
+        MPS:Value(Label213.Text),
+        Responsible: { Value: DataCardValue47.Selected.Value },
+        'Booked at': { Value: DataCardValue20.Selected.Value },
+        'USD Cost':Round(usdcost,2),
+        'EUR Cost':Round(eurcost,2)
+    }
+);
+
+Navigate('Success Screen');
+)
+)
+
+
+
+View Screen:
+
+Gallery: Sort(
+    Filter(
+    'Cost List FY25',
+    (IsBlank(Txtsearch.Text) || StartsWith('Trade show or event number', Txtsearch.Text) || StartsWith(Measures, Txtsearch.Text) || StartsWith(Supplier, Txtsearch.Text) 
+    || StartsWith(Description, Txtsearch.Text))
+    &&
+    (
+        (IsBlank(Dropdown1.Selected.Value) || Dropdown1.Selected.Value = "" || Status.Value = Dropdown1.Selected.Value) &&
+        (IsBlank(Dropdown2.Selected.Value) || Dropdown2.Selected.Value = "" || 'Booked at'.Value = Dropdown2.Selected.Value)&&
+        (IsBlank(Dropdown3.Selected.Value) || Dropdown3.Selected.Value = "" || 'Type of Costs'.Value = Dropdown3.Selected.Value)
+        
+        
+    )
+    ),'Date of invoice or quotation',SortOrder.Descending)

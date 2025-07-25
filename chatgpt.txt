@@ -1,0 +1,38 @@
+Azure Data Engineer Interview Preparation Summary
+
+Reading SAP Data with ADF
+- Access SAP data by generating CSV files via ABAP code on SAP side.
+- Pull these CSV files from a shared folder or ADLS using ADF.
+- Alternative: Use SAP connector or third-party tools if direct access is available.
+
+Incremental Loads with Files
+- Use naming conventions or timestamps to detect new files.
+- Maintain watermark or metadata logs to track processed files.
+- Only process new or changed data in each pipeline run.
+
+Data Processing Flow (Landing → Bronze → Silver → Gold)
+- Landing: Raw files stored in ADLS.
+- Bronze: Convert files to Parquet format, remove duplicates, add columns.
+- Silver: Enrich data by joining with master tables.
+- Gold: Aggregate data for reporting, consumed by downstream teams.
+
+Error Handling
+- ADF: Use try-catch in pipelines, log errors, send notifications on failure.
+- Databricks: Use try-except in PySpark scripts, validate data, isolate bad records.
+- Bad records stored separately for analysis.
+
+Data Validation in ADF
+- Validate file schema, size, and name conventions before processing.
+- Raise alerts or trigger retries if files are missing or corrupted.
+
+Logging and Monitoring
+- Log metadata: start/end time, rows processed, error counts to a monitoring database or Azure Log Analytics.
+- Set alerts using Azure Monitor to notify teams on failures.
+- Configure retries in ADF activities (e.g., retry 3 times with interval).
+- On retry failure, notify support teams for manual intervention.
+
+Data Quality Framework in Databricks
+- Define validation rules (null checks, regex patterns, value lists).
+- Filter bad records and add error reasons.
+- Store bad records in error folders or Delta tables.
+- Log DQ metrics and validation outcomes.

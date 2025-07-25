@@ -1,0 +1,145 @@
+In my current project, we extract data from multiple sources including SAP, Microsoft Navision, on-premises SQL Server, and external files.
+We use Azure Data Factory (ADF) for orchestrating the data ingestion pipelines. Structured and unstructured files are ingested and stored in Azure Data Lake Storage Gen2 (ADLS) in a hierarchical structure.
+For processing and transformation, we leverage Azure Databricks with PySpark, especially for scalable ETL workloads. The transformed data is written into Delta Lake tables.
+We use Unity Catalog to manage data governance and fine-grained access control for the Delta tables across workspaces and personas. This setup supports both batch and near real-time processing scenarios
+
+
+In our current organization, we don't directly connect ADF to the SAP system using built-in connectors. 
+Instead, due to internal architecture and security policies, the SAP team generates CSV extracts using ABAP programs, which are then placed into a designated folder or share.
+Azure Data Factory picks up those files—either from an on-prem location via Self-hosted Integration Runtime (SHIR) or from a mounted storage—and moves them to Azure Data Lake Storage.
+From there, we process the data using Databricks with PySpark, perform transformations, and store it in Delta Lake
+
+Since we receive periodic CSV file extracts from SAP, we implemented incremental loading using a combination of naming conventions, metadata tracking, and watermarking logic.
+
+Here's how it works:
+
+File Naming Convention:
+The SAP team generates files with a naming convention that includes a timestamp or date (e.g., sales_20250617.csv). This allows us to easily identify new files in ADF.
+
+Metadata Tracking Table:
+In our control framework (hosted in a metadata DB or Delta table), we maintain a record of the last processed file or date. ADF refers to this before processing new files.
+
+ADF Pipeline Logic:
+During each run, the ADF pipeline checks for new files by comparing file names or timestamps against the last recorded one. Only unprocessed files are picked up.
+
+Watermark Column in Data (optional):
+If the file contains a LastModifiedDate or UpdatedOn column, we use it during processing in Databricks to further filter out already loaded records, in case the file includes overlapping data.
+
+Idempotent Loads:
+We build the PySpark scripts to be idempotent—so if a file is accidentally reprocessed, it won’t result in duplicates. We do this using merge (upsert) into Delta Lake or deleting and inserting based on business keys."
+
+
+Once the file lands in ADLS, it is first stored in the landing/raw zone—this is typically the untouched data directly from the source.
+
+From there, we follow the medallion architecture (Bronze → Silver → Gold) using Azure Databricks and Delta Lake:
+
+Bronze Layer (Raw Ingest):
+
+We read the CSV files using PySpark.
+
+Convert them to Parquet format for better performance and compression.
+
+Apply basic cleaning like schema enforcement, adding metadata (e.g., load date, file name), and removing duplicates if possible.
+
+Store it in Delta Lake as the bronze table.
+
+Silver Layer (Cleaned and Enriched):
+
+In this layer, we perform more advanced transformations:
+
+Add calculated columns,
+
+Extract or split columns,
+
+Join with master data tables (e.g., product, customer, region),
+
+Filter out bad or unwanted records.
+
+The result is a clean, business-usable dataset stored in Delta Lake silver tables.
+
+Often, this is the final stage for many teams—they consume data directly from here.
+
+Gold Layer (Aggregated & Reporting-Ready):
+
+For reporting or business-specific KPIs, we create aggregated tables.
+
+These might include summaries like total sales per region, daily revenue trends, or customer lifetime value.
+
+The gold layer is typically used by BI tools like Power BI, Tableau, or pushed into Synapse for reporting."
+
+
+"Error handling is built into multiple stages of our pipeline to ensure reliability and easy troubleshooting:
+
+1. Data Validation in ADF Pipelines:
+
+Before processing, we validate the incoming files (e.g., schema checks, file size, file name conventions).
+
+If a file is missing or corrupted, the pipeline raises alerts or triggers retry logic.
+
+
+"In our ADF pipelines, we use the Get Metadata activity to verify if the incoming files are present and check their size.
+We use If Condition activities with expressions to validate the file name patterns. If any of these validations fail, the pipeline triggers alerts to notify the team and can move invalid files to a quarantine folder for manual review.
+This early validation helps us avoid processing corrupted or unexpected files, reducing failures downstream. Additionally, we configure retry policies on activities to handle transient issues."
+
+
+2.Try-Catch and Activity Failures in ADF:
+
+We use Try-Catch blocks in Data Factory pipelines to catch errors from copy or transformation activities.
+
+On failure, specific activities handle logging, send notifications (via email or Teams), or trigger compensating workflows.
+
+In Azure Data Factory, we implement error handling by simulating Try-Catch behavior using activity dependency conditions.
+For critical activities like data copy or transformations, we configure an 'On Failure' path that triggers error handling activities. These activities can log error details, send notifications via email or Teams, and even trigger compensating workflows like retries or rollback.
+This approach helps us catch failures early and respond quickly without crashing the entire pipeline.
+
+3. Error Handling in Databricks:
+
+In PySpark code, we handle exceptions explicitly. For example, we use try-except blocks around critical operations like reading files or writing to Delta tables.
+
+We also implement data quality checks to detect bad records (nulls in mandatory fields, invalid formats).
+
+Bad records can be isolated and stored in a separate error folder or error table for later analysis.
+
+In our Databricks PySpark jobs, we use try-except blocks to catch exceptions during file read/write operations, and we log those errors for debugging.
+We also run data quality checks—like checking for nulls in mandatory fields or invalid formats.
+Instead of discarding bad records, we isolate and store them in a dedicated error folder or Delta table. This allows our team to analyze and fix data quality issues later without blocking the main pipeline. 
+
+We built a reusable data quality framework in Databricks. It runs a set of predefined validation rules on incoming data—like checking nulls, formats, and allowed values.
+Bad records are isolated and written to an error table along with rule names and timestamps for analysis.
+Valid data continues through the pipeline. We also log the total rows processed, how many passed/failed, and trigger alerts if failure thresholds are high
+
+4. Logging and Monitoring:
+
+All pipelines log metadata such as start/end time, rows processed, and error counts to a monitoring database or Azure Log Analytics.
+
+We set up alerts using Azure Monitor to notify the team immediately on failures.
+In ADF: Using stored procedures, Web activities, or writing to Delta via Data Flows or linked services.
+
+In Databricks: Using PySpark to write log records at the end of the job or upon error.
+log_df = spark.createDataFrame([{
+    "pipeline_name": "Sales_ETL",
+    "start_time": start_time,
+    "end_time": end_time,
+    "status": "Success",
+    "rows_processed": total_count,
+    "error_message": None
+}])
+log_df.write.mode("append").saveAsTable("monitoring.pipeline_logs")
+
+
+5. Retries and Alerts:
+
+Pipelines are configured with retry policies (e.g., retry 3 times with intervals).
+
+If retries fail, alerts are sent to the support team for manual intervention."
+
+
+Email
+
+Microsoft Teams (via Logic App or Webhook)
+
+SMS or ticketing systems like ServiceNow
+
+"We log all pipeline runs into a metadata table, capturing details like rows processed, start/end times, and any errors.
+We use Azure Monitor and Log Analytics to track these logs and set up alert rules. For example, if a pipeline fails or if row counts drop below expectations, an alert is triggered via email or Teams.
+Each activity in ADF is also configured with retry logic—typically 3 attempts with delay intervals. If retries fail, the pipeline enters a failure path where we log the issue and notify the support team."
